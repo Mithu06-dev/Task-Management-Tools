@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="page">
+  <div class="page-head">
+    <div>
+      <h2 class="page-title">Dashboard</h2>
+      <p class="page-sub">Add tasks and keep them moving from Todo → Doing → Done.</p>
+    </div>
+
+    <div class="filters">
+      <form class="filters-row" method="get">
+        <input class="input input-sm" name="q" value="{{ q }}" placeholder="Search tasks..." />
+
+        <select class="select select-sm" name="status">
+          <option value="all" {% if status_filter=='all' %}selected{% endif %}>All status</option>
+          <option value="todo" {% if status_filter=='todo' %}selected{% endif %}>Todo</option>
+          <option value="doing" {% if status_filter=='doing' %}selected{% endif %}>Doing</option>
+          <option value="done" {% if status_filter=='done' %}selected{% endif %}>Done</option>
+        </select>
+
+        <select class="select select-sm" name="priority">
+          <option value="all" {% if priority_filter=='all' %}selected{% endif %}>All priority</option>
+          <option value="low" {% if priority_filter=='low' %}selected{% endif %}>Low</option>
+          <option value="medium" {% if priority_filter=='medium' %}selected{% endif %}>Medium</option>
+          <option value="high" {% if priority_filter=='high' %}selected{% endif %}>High</option>
+        </select>
+
+        <button class="btn btn-ghost btn-sm" type="submit">Filter</button>
+      </form>
+
+      <div class="chips">
+        <a class="chip" href="{{ url_for('dashboard', q=q, status='all', priority=priority_filter) }}">All <span class="chip-count">{{ tasks|length }}</span></a>
+        <a class="chip" href="{{ url_for('dashboard', q=q, status='todo', priority=priority_filter) }}">Todo <span class="chip-count">{{ count_map.get('todo',0) }}</span></a>
+        <a class="chip" href="{{ url_for('dashboard', q=q, status='doing', priority=priority_filter) }}">Doing <span class="chip-count">{{ count_map.get('doing',0) }}</span></a>
+        <a class="chip" href="{{ url_for('dashboard', q=q, status='done', priority=priority_filter) }}">Done <span class="chip-count">{{ count_map.get('done',0) }}</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h3 class="card-title">Add new task</h3>
+      <form method="post" class="form-grid">
+        <input type="hidden" name="action" value="create_task" />
+
+        <label class="label">Title</label>
+        <input class="input" name="title" placeholder="e.g. Review PR" required />
+
+        <label class="label">Description</label>
+        <textarea class="textarea" name="description" rows="3" placeholder="Optional details..."></textarea>
+
+        <div class="row">
+          <div class="col">
+            <label class="label">Status</label>
+            <select class="select" name="status">
+              <option value="todo">Todo</option>
+              <option value="doing">Doing</option>
+              <option value="done">Done</option>
+            </select>
+          </div>
+          <div class="col">
+            <label class="label">Priority</label>
+            <select class="select" name="priority">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+        </div>
+
+        <label class="label">Due date</label>
+        <input class="input" name="due_date" type="date" />
+
+        <button class="btn btn-primary" type="submit">Add Task</button>
+      </form>
+    </section>
+
+    <section class="card card-wide">
+      <div class="card-head">
+        <h3 class="card-title">Your tasks</h3>
+        <div class="subtle">Total: {{ tasks|length }}</div>
+      </div>
+
+      <div class="tasks">
+        {% for t in tasks %}
+          <div class="task">
+            <div class="task-left">
+              <span class="status-dot status-{{ t['status'] }}"></span>
+              <div class="task-text">
+                <div class="task-title">{{ t['title'] }}</div>
+                <div class="task-sub">{{ t['description'] if t['description'] else 'No description' }}</div>
+                <div class="task-foot">
+                  <span class="meta">Priority: <b>{{ t['priority'].capitalize() }}</b></span>
+                  <span class="meta">Due: <b>{{ t['due_date'] if t['due_date'] else '—' }}</b></span>
+                </div>
+              </div>
+            </div>
+
+            <form method="post" class="task-actions">
+              <input type="hidden" name="action" value="update_task" />
+              <input type="hidden" name="task_id" value="{{ t['id'] }}" />
+
+              <select class="select select-sm" name="status" aria-label="Status">
+                <option value="todo" {% if t['status']=='todo' %}selected{% endif %}>Todo</option>
+                <option value="doing" {% if t['status']=='doing' %}selected{% endif %}>Doing</option>
+                <option value="done" {% if t['status']=='done' %}selected{% endif %}>Done</option>
+              </select>
+
+              <select class="select select-sm" name="priority" aria-label="Priority">
+                <option value="low" {% if t['priority']=='low' %}selected{% endif %}>Low</option>
+                <option value="medium" {% if t['priority']=='medium' %}selected{% endif %}>Medium</option>
+                <option value="high" {% if t['priority']=='high' %}selected{% endif %}>High</option>
+              </select>
+
+              <input class="input input-sm" name="due_date" type="date" value="{{ t['due_date'] }}" />
+
+              <input class="input input-sm" name="description" value="{{ t['description'] }}" placeholder="Edit description" />
+
+              <button class="btn btn-ghost btn-sm" type="submit">Update</button>
+            </form>
+
+            <form method="post" class="delete-form">
+              <input type="hidden" name="action" value="delete_task" />
+              <input type="hidden" name="task_id" value="{{ t['id'] }}" />
+              <button class="btn btn-danger btn-sm" type="submit" onclick="return confirm('Delete this task?')">Delete</button>
+            </form>
+          </div>
+        {% else %}
+          <div class="empty">
+            <div class="empty-title">No tasks found</div>
+            <div class="empty-sub">Add your first task on the left.</div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</section>
+{% endblock %}
+

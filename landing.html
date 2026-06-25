@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="hero">
+  <div class="hero-left">
+    <h1 class="hero-title">Manage tasks beautifully. <span class="grad">Move faster.</span></h1>
+    <p class="hero-sub">A stylish task management tool with login, profile, and CRUD tasks—built with Flask, SQLite, HTML, and CSS.</p>
+
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="{{ url_for('register') }}">Create account</a>
+      <a class="btn btn-ghost" href="{{ url_for('login') }}">Sign in</a>
+    </div>
+
+    <div class="hero-metrics">
+      <div class="metric">
+        <div class="metric-top"><span class="metric-icon">⚡</span><span>Fast</span></div>
+        <div class="metric-val">Instant filters</div>
+      </div>
+      <div class="metric">
+        <div class="metric-top"><span class="metric-icon">🔒</span><span>Secure-ish</span></div>
+        <div class="metric-val">Hashed passwords</div>
+      </div>
+      <div class="metric">
+        <div class="metric-top"><span class="metric-icon">🧠</span><span>Clean</span></div>
+        <div class="metric-val">Simple workflow</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="showcase">
+      <div class="showcase-top">
+        <div class="pill">Todo</div>
+        <div class="pill pill-doing">Doing</div>
+        <div class="pill pill-done">Done</div>
+      </div>
+
+      <div class="task-preview">
+        <div class="task-row">
+          <div class="task-badge badge-todo"></div>
+          <div class="task-main">
+            <div class="task-title">Write project brief</div>
+            <div class="task-sub">Due: —</div>
+          </div>
+          <div class="task-meta">High</div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-badge badge-doing"></div>
+          <div class="task-main">
+            <div class="task-title">Build login UI</div>
+            <div class="task-sub">Due: 2026-07-01</div>
+          </div>
+          <div class="task-meta">Medium</div>
+        </div>
+
+        <div class="task-row">
+          <div class="task-badge badge-done"></div>
+          <div class="task-main">
+            <div class="task-title">Ship v1</div>
+            <div class="task-sub">Due: 2026-06-20</div>
+          </div>
+          <div class="task-meta">Low</div>
+        </div>
+      </div>
+
+      <div class="showcase-footer">
+        <span class="hint">Sign up to start tracking your tasks.</span>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

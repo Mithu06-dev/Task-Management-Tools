@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title or 'TaskFlow' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="bg-orb orb-1"></div>
+  <div class="bg-orb orb-2"></div>
+  <div class="bg-grid"></div>
+
+  <header class="topbar">
+    <a class="brand" href="{{ url_for('landing') }}">
+      <span class="brand-mark">✓</span>
+      <span class="brand-name">TaskFlow</span>
+    </a>
+
+    <nav class="top-nav">
+      <a class="nav-link" href="{{ url_for('landing') }}">Home</a>
+      {% if session.get('user_id') %}
+        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+        <a class="nav-link nav-cta" href="{{ url_for('logout') }}">Logout</a>
+      {% else %}
+        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+        <a class="nav-link nav-cta" href="{{ url_for('register') }}">Get started</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <section class="flash-wrap">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}" role="status">{{ message }}</div>
+          {% endfor %}
+        </section>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="footer">
+    <span>© {{ (datetime.utcnow().year) if false else '' }} TaskFlow</span>
+    <span class="dot">•</span>
+    <span>Flask + SQLite demo</span>
+  </footer>
+</body>
+</html>
+

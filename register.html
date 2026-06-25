@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div class="auth-card">
+    <h2 class="auth-title">Create your account</h2>
+    <p class="auth-sub">Start managing tasks in seconds.</p>
+
+    <form method="post" class="form-grid">
+      <label class="label">Username</label>
+      <input class="input" name="username" placeholder="e.g. alex" required />
+
+      <label class="label">Email</label>
+      <input class="input" type="email" name="email" placeholder="alex@example.com" required />
+
+      <label class="label">Password</label>
+      <input class="input" type="password" name="password" placeholder="Minimum 8 characters" required />
+
+      <button class="btn btn-primary" type="submit">Register</button>
+    </form>
+
+    <div class="auth-links">
+      <a class="link" href="{{ url_for('login') }}">Already have an account? Login</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+

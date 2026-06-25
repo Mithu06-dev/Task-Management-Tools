@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="auth">
+  <div class="auth-card">
+    <h2 class="auth-title">Welcome back</h2>
+    <p class="auth-sub">Sign in to access your dashboard.</p>
+
+    <form method="post" class="form-grid">
+      <label class="label">Username or email</label>
+      <input class="input" name="username_or_email" placeholder="e.g. mithran or user@email.com" required />
+
+      <label class="label">Password</label>
+      <input class="input" name="password" type="password" placeholder="••••••••" required />
+
+      <button class="btn btn-primary" type="submit">Login</button>
+    </form>
+
+    <div class="auth-links">
+      <a class="link" href="{{ url_for('register') }}">Create an account</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
